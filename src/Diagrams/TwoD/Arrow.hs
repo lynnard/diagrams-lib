@@ -5,7 +5,7 @@
 {-# LANGUAGE MultiParamTypeClasses      #-}
 {-# LANGUAGE RankNTypes                 #-}
 {-# LANGUAGE ScopedTypeVariables        #-}
-{-# LANGUAGE TemplateHaskell            #-}
+-- {-# LANGUAGE TemplateHaskell            #-}
 {-# LANGUAGE TypeFamilies               #-}
 {-# LANGUAGE UndecidableInstances       #-}
 
@@ -108,8 +108,8 @@ module Diagrams.TwoD.Arrow
 import           Control.Applicative       ((<$>), (<*>))
 #endif
 import           Control.Lens              (Lens', Traversal',
-                                            generateSignatures, lensRules,
-                                            makeLensesWith, view, (%~), (&),
+                                            -- generateSignatures, lensRules,
+                                            {- makeLensesWith, -} view, (%~), (&),
                                             (.~), (^.))
 import           Data.Default.Class
 import           Data.Maybe                (fromMaybe)
@@ -178,7 +178,277 @@ instance TypeableFloat n => Default (ArrowOpts n) where
         , _shaftStyle   = mempty
         }
 
-makeLensesWith (lensRules & generateSignatures .~ False) ''ArrowOpts
+-- makeLensesWith (lensRules & generateSignatures .~ False) ''ArrowOpts
+arrowHead
+  f_amG7
+  (ArrowOpts x1_amG8
+             x2_amG9
+             x3_amGa
+             x4_amGb
+             x5_amGc
+             x6_amGd
+             x7_amGe
+             x8_amGf
+             x9_amGg
+             x10_amGh)
+  = fmap
+      (\ y1_amGi
+         -> ArrowOpts
+              y1_amGi
+              x2_amG9
+              x3_amGa
+              x4_amGb
+              x5_amGc
+              x6_amGd
+              x7_amGe
+              x8_amGf
+              x9_amGg
+              x10_amGh)
+      (f_amG7 x1_amG8)
+{-# INLINE arrowHead #-}
+arrowShaft
+  f_amGj
+  (ArrowOpts x1_amGk
+             x2_amGl
+             x3_amGm
+             x4_amGn
+             x5_amGo
+             x6_amGp
+             x7_amGq
+             x8_amGr
+             x9_amGs
+             x10_amGt)
+  = fmap
+      (\ y1_amGu
+         -> ArrowOpts
+              x1_amGk
+              x2_amGl
+              y1_amGu
+              x4_amGn
+              x5_amGo
+              x6_amGp
+              x7_amGq
+              x8_amGr
+              x9_amGs
+              x10_amGt)
+      (f_amGj x3_amGm)
+{-# INLINE arrowShaft #-}
+arrowTail
+  f_amGv
+  (ArrowOpts x1_amGw
+             x2_amGx
+             x3_amGy
+             x4_amGz
+             x5_amGA
+             x6_amGB
+             x7_amGC
+             x8_amGD
+             x9_amGE
+             x10_amGF)
+  = fmap
+      (\ y1_amGG
+         -> ArrowOpts
+              x1_amGw
+              y1_amGG
+              x3_amGy
+              x4_amGz
+              x5_amGA
+              x6_amGB
+              x7_amGC
+              x8_amGD
+              x9_amGE
+              x10_amGF)
+      (f_amGv x2_amGx)
+{-# INLINE arrowTail #-}
+headGap
+  f_amGH
+  (ArrowOpts x1_amGI
+             x2_amGJ
+             x3_amGK
+             x4_amGL
+             x5_amGM
+             x6_amGN
+             x7_amGO
+             x8_amGP
+             x9_amGQ
+             x10_amGR)
+  = fmap
+      (\ y1_amGS
+         -> ArrowOpts
+              x1_amGI
+              x2_amGJ
+              x3_amGK
+              y1_amGS
+              x5_amGM
+              x6_amGN
+              x7_amGO
+              x8_amGP
+              x9_amGQ
+              x10_amGR)
+      (f_amGH x4_amGL)
+{-# INLINE headGap #-}
+headLength
+  f_amGT
+  (ArrowOpts x1_amGU
+             x2_amGV
+             x3_amGW
+             x4_amGX
+             x5_amGY
+             x6_amGZ
+             x7_amH0
+             x8_amH1
+             x9_amH2
+             x10_amH3)
+  = fmap
+      (\ y1_amH4
+         -> ArrowOpts
+              x1_amGU
+              x2_amGV
+              x3_amGW
+              x4_amGX
+              x5_amGY
+              x6_amGZ
+              y1_amH4
+              x8_amH1
+              x9_amH2
+              x10_amH3)
+      (f_amGT x7_amH0)
+{-# INLINE headLength #-}
+headStyle
+  f_amH5
+  (ArrowOpts x1_amH6
+             x2_amH7
+             x3_amH8
+             x4_amH9
+             x5_amHa
+             x6_amHb
+             x7_amHc
+             x8_amHd
+             x9_amHe
+             x10_amHf)
+  = fmap
+      (\ y1_amHg
+         -> ArrowOpts
+              x1_amH6
+              x2_amH7
+              x3_amH8
+              x4_amH9
+              x5_amHa
+              y1_amHg
+              x7_amHc
+              x8_amHd
+              x9_amHe
+              x10_amHf)
+      (f_amH5 x6_amHb)
+{-# INLINE headStyle #-}
+shaftStyle
+  f_amHh
+  (ArrowOpts x1_amHi
+             x2_amHj
+             x3_amHk
+             x4_amHl
+             x5_amHm
+             x6_amHn
+             x7_amHo
+             x8_amHp
+             x9_amHq
+             x10_amHr)
+  = fmap
+      (\ y1_amHs
+         -> ArrowOpts
+              x1_amHi
+              x2_amHj
+              x3_amHk
+              x4_amHl
+              x5_amHm
+              x6_amHn
+              x7_amHo
+              x8_amHp
+              x9_amHq
+              y1_amHs)
+      (f_amHh x10_amHr)
+{-# INLINE shaftStyle #-}
+tailGap
+  f_amHt
+  (ArrowOpts x1_amHu
+             x2_amHv
+             x3_amHw
+             x4_amHx
+             x5_amHy
+             x6_amHz
+             x7_amHA
+             x8_amHB
+             x9_amHC
+             x10_amHD)
+  = fmap
+      (\ y1_amHE
+         -> ArrowOpts
+              x1_amHu
+              x2_amHv
+              x3_amHw
+              x4_amHx
+              y1_amHE
+              x6_amHz
+              x7_amHA
+              x8_amHB
+              x9_amHC
+              x10_amHD)
+      (f_amHt x5_amHy)
+{-# INLINE tailGap #-}
+tailLength
+  f_amHF
+  (ArrowOpts x1_amHG
+             x2_amHH
+             x3_amHI
+             x4_amHJ
+             x5_amHK
+             x6_amHL
+             x7_amHM
+             x8_amHN
+             x9_amHO
+             x10_amHP)
+  = fmap
+      (\ y1_amHQ
+         -> ArrowOpts
+              x1_amHG
+              x2_amHH
+              x3_amHI
+              x4_amHJ
+              x5_amHK
+              x6_amHL
+              x7_amHM
+              x8_amHN
+              y1_amHQ
+              x10_amHP)
+      (f_amHF x9_amHO)
+{-# INLINE tailLength #-}
+tailStyle
+  f_amHR
+  (ArrowOpts x1_amHS
+             x2_amHT
+             x3_amHU
+             x4_amHV
+             x5_amHW
+             x6_amHX
+             x7_amHY
+             x8_amHZ
+             x9_amI0
+             x10_amI1)
+  = fmap
+      (\ y1_amI2
+         -> ArrowOpts
+              x1_amHS
+              x2_amHT
+              x3_amHU
+              x4_amHV
+              x5_amHW
+              x6_amHX
+              x7_amHY
+              y1_amI2
+              x9_amI0
+              x10_amI1)
+      (f_amHR x8_amHZ)
+{-# INLINE tailStyle #-}
 
 -- | A shape to place at the head of the arrow.
 arrowHead :: Lens' (ArrowOpts n) (ArrowHT n)

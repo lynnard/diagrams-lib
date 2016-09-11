@@ -2,7 +2,7 @@
 {-# LANGUAGE DeriveDataTypeable    #-}
 {-# LANGUAGE FlexibleContexts      #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
-{-# LANGUAGE TemplateHaskell       #-}
+-- {-# LANGUAGE TemplateHaskell       #-}
 {-# LANGUAGE TypeFamilies          #-}
 {-# LANGUAGE ScopedTypeVariables   #-}
 {-# LANGUAGE UndecidableInstances  #-}
@@ -31,7 +31,7 @@ module Diagrams.ThreeD.Camera
        )
        where
 
-import           Control.Lens           (makeLenses)
+import           qualified Control.Lens.Type
 import           Data.Monoid
 import           Data.Typeable
 
@@ -77,7 +77,23 @@ data PerspectiveLens n = PerspectiveLens
   }
   deriving Typeable
 
-makeLenses ''PerspectiveLens
+-- makeLenses ''PerspectiveLens
+horizontalFieldOfView ::
+  forall n_a1num.
+  Control.Lens.Type.Lens' (PerspectiveLens n_a1num) (Angle n_a1num)
+horizontalFieldOfView f_a1nCi (PerspectiveLens x1_a1nCj x2_a1nCk)
+  = fmap
+      (\ y1_a1nCl -> PerspectiveLens y1_a1nCl x2_a1nCk)
+      (f_a1nCi x1_a1nCj)
+{-# INLINE horizontalFieldOfView #-}
+verticalFieldOfView ::
+  forall n_a1num.
+  Control.Lens.Type.Lens' (PerspectiveLens n_a1num) (Angle n_a1num)
+verticalFieldOfView f_a1nCq (PerspectiveLens x1_a1nCr x2_a1nCs)
+  = fmap
+      (\ y1_a1nCt -> PerspectiveLens x1_a1nCr y1_a1nCt)
+      (f_a1nCq x2_a1nCs)
+{-# INLINE verticalFieldOfView #-}
 
 type instance V (PerspectiveLens n) = V3
 type instance N (PerspectiveLens n) = n
@@ -92,7 +108,19 @@ data OrthoLens n = OrthoLens
                }
   deriving Typeable
 
-makeLenses ''OrthoLens
+-- makeLenses ''OrthoLens
+orthoHeight ::
+  forall n_a1nDi. Control.Lens.Type.Lens' (OrthoLens n_a1nDi) n_a1nDi
+orthoHeight f_a1nGw (OrthoLens x1_a1nGx x2_a1nGy)
+  = fmap
+      (\ y1_a1nGz -> OrthoLens x1_a1nGx y1_a1nGz) (f_a1nGw x2_a1nGy)
+{-# INLINE orthoHeight #-}
+orthoWidth ::
+  forall n_a1nDi. Control.Lens.Type.Lens' (OrthoLens n_a1nDi) n_a1nDi
+orthoWidth f_a1nGA (OrthoLens x1_a1nGB x2_a1nGC)
+  = fmap
+      (\ y1_a1nGD -> OrthoLens y1_a1nGD x2_a1nGC) (f_a1nGA x1_a1nGB)
+{-# INLINE orthoWidth #-}
 
 type instance V (OrthoLens n) = V3
 type instance N (OrthoLens n) = n

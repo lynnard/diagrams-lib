@@ -7,10 +7,11 @@
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE MultiParamTypeClasses      #-}
 {-# LANGUAGE StandaloneDeriving         #-}
-{-# LANGUAGE TemplateHaskell            #-}
+-- {-# LANGUAGE TemplateHaskell            #-}
 {-# LANGUAGE TypeFamilies               #-}
 {-# LANGUAGE TypeOperators              #-}
 {-# LANGUAGE UndecidableInstances       #-}
+{-# LANGUAGE RankNTypes                 #-}
 
 -----------------------------------------------------------------------------
 -- |
@@ -540,7 +541,21 @@ data OffsetEnvelope v n = OffsetEnvelope
   , _oeEnvelope :: Envelope v n
   }
 
-makeLenses ''OffsetEnvelope
+-- makeLenses ''OffsetEnvelope
+oeEnvelope ::
+  forall v_a1POj n_a1POk.
+  Lens' (OffsetEnvelope v_a1POj n_a1POk) (Envelope v_a1POj n_a1POk)
+oeEnvelope f_a1SGz (OffsetEnvelope x1_a1SGA x2_a1SGB)
+  = fmap
+      (\ y1_a1SGC -> OffsetEnvelope x1_a1SGA y1_a1SGC) (f_a1SGz x2_a1SGB)
+{-# INLINE oeEnvelope #-}
+oeOffset ::
+  forall v_a1POj n_a1POk.
+  Lens' (OffsetEnvelope v_a1POj n_a1POk) (TotalOffset v_a1POj n_a1POk)
+oeOffset f_a1SGP (OffsetEnvelope x1_a1SGX x2_a1SH5)
+  = fmap
+      (\ y1_a1SHd -> OffsetEnvelope y1_a1SHd x2_a1SH5) (f_a1SGP x1_a1SGX)
+{-# INLINE oeOffset #-}
 
 instance (Metric v, OrderedField n) => Semigroup (OffsetEnvelope v n) where
   (OffsetEnvelope o1 e1) <> (OffsetEnvelope o2 e2)

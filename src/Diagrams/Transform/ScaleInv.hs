@@ -6,7 +6,7 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE ScopedTypeVariables   #-}
 {-# LANGUAGE StandaloneDeriving    #-}
-{-# LANGUAGE TemplateHaskell       #-}
+-- {-# LANGUAGE TemplateHaskell       #-}
 {-# LANGUAGE TypeFamilies          #-}
 {-# LANGUAGE UndecidableInstances  #-}
 -----------------------------------------------------------------------------
@@ -26,7 +26,8 @@ module Diagrams.Transform.ScaleInv
     , scaleInv, scaleInvPrim)
     where
 
-import           Control.Lens            (makeLenses, view, (^.))
+import           Control.Lens            ({- makeLenses, -} view, (^.))
+import qualified Control.Lens.Type
 #if __GLASGOW_HASKELL__ < 710
 import           Data.Semigroup
 #endif
@@ -81,7 +82,30 @@ data ScaleInv t =
 
 deriving instance (Show t, Show (Vn t)) => Show (ScaleInv t)
 
-makeLenses ''ScaleInv
+-- makeLenses ''ScaleInv
+scaleInvDir ::
+  forall t_a1FhS.
+  Control.Lens.Type.Lens' (ScaleInv t_a1FhS) (Vn t_a1FhS)
+scaleInvDir f_a1FtW (ScaleInv x1_a1FtX x2_a1FtY x3_a1FtZ)
+  = fmap
+      (\ y1_a1Fu0 -> ScaleInv x1_a1FtX y1_a1Fu0 x3_a1FtZ)
+      (f_a1FtW x2_a1FtY)
+{-# INLINE scaleInvDir #-}
+scaleInvLoc ::
+  forall t_a1FhS.
+  Control.Lens.Type.Lens' (ScaleInv t_a1FhS) (Point (V t_a1FhS) (N t_a1FhS))
+scaleInvLoc f_a1Fu5 (ScaleInv x1_a1Fu6 x2_a1Fu7 x3_a1Fu8)
+  = fmap
+      (\ y1_a1Fu9 -> ScaleInv x1_a1Fu6 x2_a1Fu7 y1_a1Fu9)
+      (f_a1Fu5 x3_a1Fu8)
+{-# INLINE scaleInvLoc #-}
+scaleInvObj ::
+  forall t_a1FhS. Control.Lens.Type.Lens' (ScaleInv t_a1FhS) t_a1FhS
+scaleInvObj f_a1Fua (ScaleInv x1_a1Fub x2_a1Fuc x3_a1Fud)
+  = fmap
+      (\ y1_a1Fue -> ScaleInv y1_a1Fue x2_a1Fuc x3_a1Fud)
+      (f_a1Fua x1_a1Fub)
+{-# INLINE scaleInvObj #-}
 
 -- | Create a scale-invariant object pointing in the given direction,
 --   located at the origin.

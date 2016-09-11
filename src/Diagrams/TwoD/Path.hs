@@ -5,7 +5,7 @@
 {-# LANGUAGE MultiParamTypeClasses      #-}
 {-# LANGUAGE Rank2Types                 #-}
 {-# LANGUAGE StandaloneDeriving         #-}
-{-# LANGUAGE TemplateHaskell            #-}
+-- {-# LANGUAGE TemplateHaskell            #-}
 {-# LANGUAGE TypeFamilies               #-}
 {-# LANGUAGE UndecidableInstances       #-}
 {-# LANGUAGE ViewPatterns               #-}
@@ -135,7 +135,13 @@ data StrokeOpts a
 
     }
 
-makeLensesWith (generateSignatures .~ False $ lensRules) ''StrokeOpts
+-- makeLensesWith (generateSignatures .~ False $ lensRules) ''StrokeOpts
+queryFillRule f_anMy (StrokeOpts x1_anMz x2_anMA)
+  = fmap (\ y1_anMB -> StrokeOpts x1_anMz y1_anMB) (f_anMy x2_anMA)
+{-# INLINE queryFillRule #-}
+vertexNames f_anMC (StrokeOpts x1_anMD x2_anME)
+  = fmap (\ y1_anMF -> StrokeOpts y1_anMF x2_anME) (f_anMC x1_anMD)
+{-# INLINE vertexNames #-}
 
 -- | Atomic names that should be assigned to the vertices of the path so that
 --   they can be referenced later.  If there are not enough names, the extra
@@ -370,7 +376,11 @@ trailCrossings p@(unp2 -> (x,y)) tr
 newtype Clip n = Clip [Path V2 n]
   deriving (Typeable, Semigroup)
 
-makeWrapped ''Clip
+-- makeWrapped ''Clip
+instance Clip n_aoMa ~ t_aoM9 => Rewrapped (Clip n_anN2) t_aoM9
+instance Wrapped (Clip n_anN2) where
+  type Unwrapped (Clip n_anN2) = [Path V2 n_anN2]
+  _Wrapped' = iso (\ (Clip x_aoM8) -> x_aoM8) Clip
 
 instance Typeable n => AttributeClass (Clip n)
 

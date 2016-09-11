@@ -1,5 +1,5 @@
 {-# LANGUAGE FlexibleContexts     #-}
-{-# LANGUAGE TemplateHaskell      #-}
+-- {-# LANGUAGE TemplateHaskell      #-}
 {-# LANGUAGE TypeFamilies         #-}
 {-# LANGUAGE UndecidableInstances #-}
 -----------------------------------------------------------------------------
@@ -21,8 +21,8 @@ module Diagrams.Parametric.Adjust
 
     ) where
 
-import           Control.Lens        (Lens', generateSignatures, lensRules, makeLensesWith, (&),
-                                      (.~), (^.))
+import           Control.Lens        (Lens', {- generateSignatures, -} {- lensRules, makeLensesWith, -} -- (&),
+                                      {- (.~), -} (^.))
 import           Data.Proxy
 
 import           Data.Default.Class
@@ -54,7 +54,19 @@ data AdjustOpts n = AO { _adjMethod    :: AdjustMethod n
 
 -- See Diagrams.Combinators for reasoning behind 'Proxy'.
 
-makeLensesWith (lensRules & generateSignatures .~ False) ''AdjustOpts
+-- makeLensesWith (lensRules & generateSignatures .~ False) ''AdjustOpts
+adjEps f_aQYg (AO x1_aQYh x2_aQYi x3_aQYj x4_aQYk)
+  = fmap
+      (\ y1_aQYl -> AO x1_aQYh x2_aQYi y1_aQYl x4_aQYk) (f_aQYg x3_aQYj)
+{-# INLINE adjEps #-}
+adjMethod f_aQYm (AO x1_aQYn x2_aQYo x3_aQYp x4_aQYq)
+  = fmap
+      (\ y1_aQYr -> AO y1_aQYr x2_aQYo x3_aQYp x4_aQYq) (f_aQYm x1_aQYn)
+{-# INLINE adjMethod #-}
+adjSide f_aQYs (AO x1_aQYt x2_aQYu x3_aQYv x4_aQYw)
+  = fmap
+      (\ y1_aQYy -> AO x1_aQYt y1_aQYy x3_aQYv x4_aQYw) (f_aQYs x2_aQYu)
+{-# INLINE adjSide #-}
 
 -- | Which method should be used for adjusting?
 adjMethod :: Lens' (AdjustOpts n) (AdjustMethod n)

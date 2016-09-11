@@ -4,7 +4,7 @@
 {-# LANGUAGE FlexibleInstances         #-}
 {-# LANGUAGE NoMonomorphismRestriction #-}
 {-# LANGUAGE RankNTypes                #-}
-{-# LANGUAGE TemplateHaskell           #-}
+-- {-# LANGUAGE TemplateHaskell           #-}
 {-# LANGUAGE TypeFamilies              #-}
 {-# LANGUAGE UndecidableInstances      #-}
 -----------------------------------------------------------------------------
@@ -73,7 +73,9 @@ module Diagrams.Backend.CmdLine
   , defaultLoopRender
   ) where
 
-import           Control.Lens              (Lens', makeLenses, (&), (.~), (^.))
+import           Control.Lens              (Lens', {- makeLenses, -} (&), (.~), (^.))
+import qualified Control.Lens.Type
+import qualified Control.Lens.Iso
 import           Diagrams.Animation
 import           Diagrams.Attributes
 import           Diagrams.Core             hiding (output, value)
@@ -121,7 +123,22 @@ data DiagramOpts = DiagramOpts
   }
   deriving (Show, Data, Typeable)
 
-makeLenses ''DiagramOpts
+-- makeLenses ''DiagramOpts
+height :: Lens' DiagramOpts (Maybe Int)
+height f_aefd (DiagramOpts x1_aefe x2_aeff x3_aefg)
+  = fmap
+      (\ y1_aefh -> DiagramOpts x1_aefe y1_aefh x3_aefg) (f_aefd x2_aeff)
+{-# INLINE height #-}
+output :: Lens' DiagramOpts FilePath
+output f_aefi (DiagramOpts x1_aefj x2_aefk x3_aefl)
+  = fmap
+      (\ y1_aefm -> DiagramOpts x1_aefj x2_aefk y1_aefm) (f_aefi x3_aefl)
+{-# INLINE output #-}
+width :: Lens' DiagramOpts (Maybe Int)
+width f_aefn (DiagramOpts x1_aefo x2_aefp x3_aefq)
+  = fmap
+      (\ y1_aefr -> DiagramOpts y1_aefr x2_aefp x3_aefq) (f_aefn x1_aefo)
+{-# INLINE width #-}
 
 -- | Extra options for a program that can offer a choice
 --   between multiple diagrams.
@@ -132,7 +149,17 @@ data DiagramMultiOpts = DiagramMultiOpts
   }
   deriving (Show, Data, Typeable)
 
-makeLenses ''DiagramMultiOpts
+-- makeLenses ''DiagramMultiOpts
+list :: Lens' DiagramMultiOpts Bool
+list f_aekk (DiagramMultiOpts x1_aekl x2_aekm)
+  = fmap
+      (\ y1_aekn -> DiagramMultiOpts x1_aekl y1_aekn) (f_aekk x2_aekm)
+{-# INLINE list #-}
+selection :: Lens' DiagramMultiOpts (Maybe String)
+selection f_aeko (DiagramMultiOpts x1_aekp x2_aekq)
+  = fmap
+      (\ y1_aekr -> DiagramMultiOpts y1_aekr x2_aekq) (f_aeko x1_aekp)
+{-# INLINE selection #-}
 
 -- | Extra options for animations.
 data DiagramAnimOpts = DiagramAnimOpts
@@ -140,7 +167,12 @@ data DiagramAnimOpts = DiagramAnimOpts
   }
   deriving (Show, Data, Typeable)
 
-makeLenses ''DiagramAnimOpts
+-- makeLenses ''DiagramAnimOpts
+fpu :: Control.Lens.Type.Iso' DiagramAnimOpts Double
+fpu
+  = Control.Lens.Iso.iso
+      (\ (DiagramAnimOpts x_aenk) -> x_aenk) DiagramAnimOpts
+{-# INLINE fpu #-}
 
 -- | Extra options for command-line looping.
 data DiagramLoopOpts = DiagramLoopOpts
@@ -149,7 +181,25 @@ data DiagramLoopOpts = DiagramLoopOpts
   , _interval :: Int             -- ^ Interval in seconds at which to check for recompilation.
   }
 
-makeLenses ''DiagramLoopOpts
+-- makeLenses ''DiagramLoopOpts
+interval :: Lens' DiagramLoopOpts Int
+interval f_aeuj (DiagramLoopOpts x1_aeuk x2_aeul x3_aeum)
+  = fmap
+      (\ y1_aeun -> DiagramLoopOpts x1_aeuk x2_aeul y1_aeun)
+      (f_aeuj x3_aeum)
+{-# INLINE interval #-}
+loop :: Lens' DiagramLoopOpts Bool
+loop f_aeuo (DiagramLoopOpts x1_aeup x2_aeuq x3_aeur)
+  = fmap
+      (\ y1_aeus -> DiagramLoopOpts y1_aeus x2_aeuq x3_aeur)
+      (f_aeuo x1_aeup)
+{-# INLINE loop #-}
+src :: Lens' DiagramLoopOpts (Maybe FilePath)
+src f_aeut (DiagramLoopOpts x1_aeuu x2_aeuv x3_aeuw)
+  = fmap
+      (\ y1_aeux -> DiagramLoopOpts x1_aeuu y1_aeux x3_aeuw)
+      (f_aeut x2_aeuv)
+{-# INLINE src #-}
 
 -- | Command line parser for 'DiagramOpts'.
 --   Width is option @--width@ or @-w@.

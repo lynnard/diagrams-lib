@@ -7,7 +7,7 @@
 {-# LANGUAGE MultiParamTypeClasses      #-}
 {-# LANGUAGE ScopedTypeVariables        #-}
 {-# LANGUAGE StandaloneDeriving         #-}
-{-# LANGUAGE TemplateHaskell            #-}
+-- {-# LANGUAGE TemplateHaskell            #-}
 {-# LANGUAGE TypeFamilies               #-}
 {-# LANGUAGE UndecidableInstances       #-}
 {-# LANGUAGE ViewPatterns               #-}
@@ -91,7 +91,15 @@ data GradientStop d = GradientStop
   , _stopFraction :: d
   }
 
-makeLensesWith (lensRules & generateSignatures .~ False) ''GradientStop
+-- makeLensesWith (lensRules & generateSignatures .~ False) ''GradientStop
+stopColor f_a37vr (GradientStop x1_a37vs x2_a37vu)
+  = fmap
+      (\ y1_a37vv -> GradientStop y1_a37vv x2_a37vu) (f_a37vr x1_a37vs)
+{-# INLINE stopColor #-}
+stopFraction f_a37vB (GradientStop x1_a37vD x2_a37vE)
+  = fmap
+      (\ y1_a37vF -> GradientStop x1_a37vD y1_a37vF) (f_a37vB x2_a37vE)
+{-# INLINE stopFraction #-}
 
 -- | A color for the stop.
 stopColor :: Lens' (GradientStop n) SomeColor
@@ -117,7 +125,47 @@ data LGradient n = LGradient
 type instance V (LGradient n) = V2
 type instance N (LGradient n) = n
 
-makeLensesWith (lensRules & generateSignatures .~ False) ''LGradient
+-- makeLensesWith (lensRules & generateSignatures .~ False) ''LGradient
+lGradEnd
+  f_a37Lv
+  (LGradient x1_a37Lw x2_a37Lx x3_a37Ly x4_a37Lz x5_a37LA)
+  = fmap
+      (\ y1_a37LB
+         -> LGradient x1_a37Lw x2_a37Lx y1_a37LB x4_a37Lz x5_a37LA)
+      (f_a37Lv x3_a37Ly)
+{-# INLINE lGradEnd #-}
+lGradSpreadMethod
+  f_a37LC
+  (LGradient x1_a37LD x2_a37LE x3_a37LF x4_a37LG x5_a37LH)
+  = fmap
+      (\ y1_a37LI
+         -> LGradient x1_a37LD x2_a37LE x3_a37LF x4_a37LG y1_a37LI)
+      (f_a37LC x5_a37LH)
+{-# INLINE lGradSpreadMethod #-}
+lGradStart
+  f_a37LJ
+  (LGradient x1_a37LK x2_a37LL x3_a37LM x4_a37LN x5_a37LO)
+  = fmap
+      (\ y1_a37LP
+         -> LGradient x1_a37LK y1_a37LP x3_a37LM x4_a37LN x5_a37LO)
+      (f_a37LJ x2_a37LL)
+{-# INLINE lGradStart #-}
+lGradStops
+  f_a37LQ
+  (LGradient x1_a37LR x2_a37LT x3_a37LU x4_a37LV x5_a37LW)
+  = fmap
+      (\ y1_a37LZ
+         -> LGradient y1_a37LZ x2_a37LT x3_a37LU x4_a37LV x5_a37LW)
+      (f_a37LQ x1_a37LR)
+{-# INLINE lGradStops #-}
+lGradTrans
+  f_a37M4
+  (LGradient x1_a37M5 x2_a37M7 x3_a37M8 x4_a37Mb x5_a37Mc)
+  = fmap
+      (\ y1_a37Md
+         -> LGradient x1_a37M5 x2_a37M7 x3_a37M8 y1_a37Md x5_a37Mc)
+      (f_a37M4 x4_a37Mb)
+{-# INLINE lGradTrans #-}
 
 instance Fractional n => Transformable (LGradient n) where
   transform = over lGradTrans . transform
@@ -151,7 +199,112 @@ data RGradient n = RGradient
   , _rGradTrans        :: Transformation V2 n
   , _rGradSpreadMethod :: SpreadMethod }
 
-makeLensesWith (lensRules & generateSignatures .~ False) ''RGradient
+-- makeLensesWith (lensRules & generateSignatures .~ False) ''RGradient
+rGradCenter0
+  f_a37WK
+  (RGradient x1_a37WL
+             x2_a37WM
+             x3_a37WN
+             x4_a37WP
+             x5_a37WQ
+             x6_a37WR
+             x7_a37WS)
+  = fmap
+      (\ y1_a37WT
+         -> RGradient
+              x1_a37WL y1_a37WT x3_a37WN x4_a37WP x5_a37WQ x6_a37WR x7_a37WS)
+      (f_a37WK x2_a37WM)
+{-# INLINE rGradCenter0 #-}
+rGradCenter1
+  f_a37WU
+  (RGradient x1_a37WV
+             x2_a37WW
+             x3_a37WX
+             x4_a37WY
+             x5_a37WZ
+             x6_a37X0
+             x7_a37X1)
+  = fmap
+      (\ y1_a37X2
+         -> RGradient
+              x1_a37WV x2_a37WW x3_a37WX y1_a37X2 x5_a37WZ x6_a37X0 x7_a37X1)
+      (f_a37WU x4_a37WY)
+{-# INLINE rGradCenter1 #-}
+rGradRadius0
+  f_a37X3
+  (RGradient x1_a37X4
+             x2_a37X5
+             x3_a37X6
+             x4_a37X7
+             x5_a37X8
+             x6_a37X9
+             x7_a37Xa)
+  = fmap
+      (\ y1_a37Xb
+         -> RGradient
+              x1_a37X4 x2_a37X5 y1_a37Xb x4_a37X7 x5_a37X8 x6_a37X9 x7_a37Xa)
+      (f_a37X3 x3_a37X6)
+{-# INLINE rGradRadius0 #-}
+rGradRadius1
+  f_a37Xc
+  (RGradient x1_a37Xd
+             x2_a37Xe
+             x3_a37Xf
+             x4_a37Xh
+             x5_a37Xi
+             x6_a37Xj
+             x7_a37Xk)
+  = fmap
+      (\ y1_a37Xm
+         -> RGradient
+              x1_a37Xd x2_a37Xe x3_a37Xf x4_a37Xh y1_a37Xm x6_a37Xj x7_a37Xk)
+      (f_a37Xc x5_a37Xi)
+{-# INLINE rGradRadius1 #-}
+rGradSpreadMethod
+  f_a37Xn
+  (RGradient x1_a37Xo
+             x2_a37Xp
+             x3_a37Xq
+             x4_a37Xr
+             x5_a37Xs
+             x6_a37Xt
+             x7_a37Xu)
+  = fmap
+      (\ y1_a37Xv
+         -> RGradient
+              x1_a37Xo x2_a37Xp x3_a37Xq x4_a37Xr x5_a37Xs x6_a37Xt y1_a37Xv)
+      (f_a37Xn x7_a37Xu)
+{-# INLINE rGradSpreadMethod #-}
+rGradStops
+  f_a37Xx
+  (RGradient x1_a37Xy
+             x2_a37XA
+             x3_a37XB
+             x4_a37XC
+             x5_a37XE
+             x6_a37XF
+             x7_a37XG)
+  = fmap
+      (\ y1_a37XH
+         -> RGradient
+              y1_a37XH x2_a37XA x3_a37XB x4_a37XC x5_a37XE x6_a37XF x7_a37XG)
+      (f_a37Xx x1_a37Xy)
+{-# INLINE rGradStops #-}
+rGradTrans
+  f_a37XI
+  (RGradient x1_a37XJ
+             x2_a37XK
+             x3_a37XL
+             x4_a37XM
+             x5_a37XN
+             x6_a37XO
+             x7_a37XP)
+  = fmap
+      (\ y1_a37XQ
+         -> RGradient
+              x1_a37XJ x2_a37XK x3_a37XL x4_a37XM x5_a37XN y1_a37XQ x7_a37XP)
+      (f_a37XI x6_a37XO)
+{-# INLINE rGradTrans #-}
 
 type instance V (RGradient n) = V2
 type instance N (RGradient n) = n
@@ -195,7 +348,31 @@ data Texture n = SC SomeColor | LG (LGradient n) | RG (RGradient n)
 type instance V (Texture n) = V2
 type instance N (Texture n) = n
 
-makePrisms ''Texture
+-- makePrisms ''Texture
+_SC :: forall n_a37Y8. Prism' (Texture n_a37Y8) SomeColor
+_SC
+  = prism
+      (\ x_a38kV -> SC x_a38kV)
+      (\ x_a38kW
+         -> case x_a38kW of
+              SC y1_a38kX -> Right y1_a38kX
+              _ -> Left x_a38kW )
+_LG :: forall n_a37Y8. Prism' (Texture n_a37Y8) (LGradient n_a37Y8)
+_LG
+  = prism
+      (\ x_a38lr -> LG x_a38lr)
+      (\ x_a38ls
+         -> case x_a38ls of
+              LG y1_a38lt -> Right y1_a38lt
+              _ -> Left x_a38ls )
+_RG :: forall n_a37Y8. Prism' (Texture n_a37Y8) (RGradient n_a37Y8)
+_RG
+  = prism
+      (\ x_a38lv -> RG x_a38lv)
+      (\ x_a38lw
+         -> case x_a38lw of
+              RG y1_a38lx -> Right y1_a38lx
+              _ -> Left x_a38lw )
 
 -- | Prism onto an 'AlphaColour' 'Double' of a 'SC' texture.
 _AC :: Prism' (Texture n) (AlphaColour Double)

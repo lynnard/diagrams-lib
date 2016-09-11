@@ -1,6 +1,7 @@
 {-# LANGUAGE FlexibleContexts #-}
-{-# LANGUAGE TemplateHaskell  #-}
+-- {-# LANGUAGE TemplateHaskell  #-}
 {-# LANGUAGE TypeFamilies     #-}
+{-# LANGUAGE RankNTypes     #-}
 
 -----------------------------------------------------------------------------
 -- |
@@ -45,7 +46,8 @@ module Diagrams.TwoD.Shapes
        , roundedRect'
        ) where
 
-import           Control.Lens            (makeLenses, op, (&), (.~), (<>~), (^.))
+import           Control.Lens            ({- makeLenses, -} op, (&), (.~), (<>~), (^.))
+import qualified Control.Lens.Type
 import           Data.Default.Class
 import           Data.Semigroup
 
@@ -240,7 +242,47 @@ data RoundedRectOpts d = RoundedRectOpts { _radiusTL :: d
                                          , _radiusBR :: d
                                          }
 
-makeLenses ''RoundedRectOpts
+-- makeLenses ''RoundedRectOpts
+radiusBL ::
+  forall d_a3wMT.
+  Control.Lens.Type.Lens' (RoundedRectOpts d_a3wMT) d_a3wMT
+radiusBL
+  f_a3xC5
+  (RoundedRectOpts x1_a3xC6 x2_a3xC7 x3_a3xC8 x4_a3xC9)
+  = fmap
+      (\ y1_a3xCa -> RoundedRectOpts x1_a3xC6 x2_a3xC7 y1_a3xCa x4_a3xC9)
+      (f_a3xC5 x3_a3xC8)
+{-# INLINE radiusBL #-}
+radiusBR ::
+  forall d_a3wMT.
+  Control.Lens.Type.Lens' (RoundedRectOpts d_a3wMT) d_a3wMT
+radiusBR
+  f_a3xCb
+  (RoundedRectOpts x1_a3xCc x2_a3xCd x3_a3xCe x4_a3xCf)
+  = fmap
+      (\ y1_a3xCg -> RoundedRectOpts x1_a3xCc x2_a3xCd x3_a3xCe y1_a3xCg)
+      (f_a3xCb x4_a3xCf)
+{-# INLINE radiusBR #-}
+radiusTL ::
+  forall d_a3wMT.
+  Control.Lens.Type.Lens' (RoundedRectOpts d_a3wMT) d_a3wMT
+radiusTL
+  f_a3xCm
+  (RoundedRectOpts x1_a3xCn x2_a3xCo x3_a3xCp x4_a3xCq)
+  = fmap
+      (\ y1_a3xCr -> RoundedRectOpts y1_a3xCr x2_a3xCo x3_a3xCp x4_a3xCq)
+      (f_a3xCm x1_a3xCn)
+{-# INLINE radiusTL #-}
+radiusTR ::
+  forall d_a3wMT.
+  Control.Lens.Type.Lens' (RoundedRectOpts d_a3wMT) d_a3wMT
+radiusTR
+  f_a3xCu
+  (RoundedRectOpts x1_a3xCv x2_a3xCw x3_a3xCx x4_a3xCy)
+  = fmap
+      (\ y1_a3xCz -> RoundedRectOpts x1_a3xCv y1_a3xCz x3_a3xCx x4_a3xCy)
+      (f_a3xCu x2_a3xCw)
+{-# INLINE radiusTR #-}
 
 instance (Num d) => Default (RoundedRectOpts d) where
   def = RoundedRectOpts 0 0 0 0

@@ -1,7 +1,7 @@
 {-# LANGUAGE FlexibleContexts     #-}
 {-# LANGUAGE GADTs                #-}
 {-# LANGUAGE StandaloneDeriving   #-}
-{-# LANGUAGE TemplateHaskell      #-}
+-- {-# LANGUAGE TemplateHaskell      #-}
 {-# LANGUAGE TypeFamilies         #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE ViewPatterns         #-}
@@ -117,7 +117,19 @@ data OffsetOpts d = OffsetOpts
 deriving instance Eq d => Eq (OffsetOpts d)
 deriving instance Show d => Show (OffsetOpts d)
 
-makeLensesWith (lensRules & generateSignatures .~ False) ''OffsetOpts
+-- makeLensesWith (lensRules & generateSignatures .~ False) ''OffsetOpts
+offsetEpsilon f_am1V (OffsetOpts x1_am1W x2_am1X x3_am1Y)
+  = fmap
+      (\ y1_am1Z -> OffsetOpts x1_am1W x2_am1X y1_am1Z) (f_am1V x3_am1Y)
+{-# INLINE offsetEpsilon #-}
+offsetJoin f_am20 (OffsetOpts x1_am21 x2_am22 x3_am23)
+  = fmap
+      (\ y1_am24 -> OffsetOpts y1_am24 x2_am22 x3_am23) (f_am20 x1_am21)
+{-# INLINE offsetJoin #-}
+offsetMiterLimit f_am25 (OffsetOpts x1_am26 x2_am27 x3_am28)
+  = fmap
+      (\ y1_am29 -> OffsetOpts x1_am26 y1_am29 x3_am28) (f_am25 x2_am27)
+{-# INLINE offsetMiterLimit #-}
 
 -- | Specifies the style of join for between adjacent offset segments.
 offsetJoin :: Lens' (OffsetOpts d) LineJoin
@@ -141,7 +153,29 @@ data ExpandOpts d = ExpandOpts
     , _expandEpsilon    :: d
     } deriving (Eq, Show)
 
-makeLensesWith (lensRules & generateSignatures .~ False) ''ExpandOpts
+-- makeLensesWith (lensRules & generateSignatures .~ False) ''ExpandOpts
+expandCap f_aohq (ExpandOpts x1_aohr x2_aohs x3_aoht x4_aohu)
+  = fmap
+      (\ y1_aohv -> ExpandOpts x1_aohr x2_aohs y1_aohv x4_aohu)
+      (f_aohq x3_aoht)
+{-# INLINE expandCap #-}
+expandEpsilon f_aohw (ExpandOpts x1_aohx x2_aohy x3_aohz x4_aohA)
+  = fmap
+      (\ y1_aohB -> ExpandOpts x1_aohx x2_aohy x3_aohz y1_aohB)
+      (f_aohw x4_aohA)
+{-# INLINE expandEpsilon #-}
+expandJoin f_aohC (ExpandOpts x1_aohD x2_aohE x3_aohF x4_aohG)
+  = fmap
+      (\ y1_aohH -> ExpandOpts y1_aohH x2_aohE x3_aohF x4_aohG)
+      (f_aohC x1_aohD)
+{-# INLINE expandJoin #-}
+expandMiterLimit
+  f_aohI
+  (ExpandOpts x1_aohJ x2_aohK x3_aohL x4_aohM)
+  = fmap
+      (\ y1_aohN -> ExpandOpts x1_aohJ y1_aohN x3_aohL x4_aohM)
+      (f_aohI x2_aohK)
+{-# INLINE expandMiterLimit #-}
 
 -- | Specifies the style of join for between adjacent offset segments.
 expandJoin :: Lens' (ExpandOpts d) LineJoin

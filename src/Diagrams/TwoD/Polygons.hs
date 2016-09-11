@@ -2,7 +2,7 @@
 {-# LANGUAGE DeriveFunctor       #-}
 {-# LANGUAGE FlexibleContexts    #-}
 {-# LANGUAGE ScopedTypeVariables #-}
-{-# LANGUAGE TemplateHaskell     #-}
+-- {-# LANGUAGE TemplateHaskell     #-}
 {-# LANGUAGE TypeFamilies        #-}
 {-# LANGUAGE ViewPatterns        #-}
 
@@ -46,8 +46,8 @@ module Diagrams.TwoD.Polygons(
 
     ) where
 
-import           Control.Lens            (Lens', generateSignatures, lensRules,
-                                          makeLensesWith, view, (.~), (^.))
+import           Control.Lens            (Lens', -- generateSignatures, lensRules,
+                                          {- makeLensesWith, -} view, (.~), (^.))
 import           Control.Monad           (forM, liftM)
 import           Control.Monad.ST        (ST, runST)
 import           Data.Array.ST           (STUArray, newArray, readArray,
@@ -147,7 +147,22 @@ data PolygonOpts n = PolygonOpts
                    , _polyCenter :: Point V2 n
                    }
 
-makeLensesWith (generateSignatures .~ False $ lensRules) ''PolygonOpts
+-- makeLensesWith (generateSignatures .~ False $ lensRules) ''PolygonOpts
+polyCenter f_a398u (PolygonOpts x1_a398v x2_a398w x3_a398x)
+  = fmap
+      (\ y1_a398y -> PolygonOpts x1_a398v x2_a398w y1_a398y)
+      (f_a398u x3_a398x)
+{-# INLINE polyCenter #-}
+polyOrient f_a398z (PolygonOpts x1_a398A x2_a398B x3_a398C)
+  = fmap
+      (\ y1_a398D -> PolygonOpts x1_a398A y1_a398D x3_a398C)
+      (f_a398z x2_a398B)
+{-# INLINE polyOrient #-}
+polyType f_a398G (PolygonOpts x1_a398H x2_a398J x3_a398K)
+  = fmap
+      (\ y1_a398L -> PolygonOpts y1_a398L x2_a398J x3_a398K)
+      (f_a398G x1_a398H)
+{-# INLINE polyType #-}
 
 -- | Specification for the polygon's vertices.
 polyType :: Lens' (PolygonOpts n) (PolyType n)

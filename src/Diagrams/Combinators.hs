@@ -1,7 +1,7 @@
 {-# LANGUAGE FlexibleContexts      #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE Rank2Types            #-}
-{-# LANGUAGE TemplateHaskell       #-}
+-- {-# LANGUAGE TemplateHaskell       #-}
 {-# LANGUAGE TypeFamilies          #-}
 {-# LANGUAGE UndecidableInstances  #-}
 -----------------------------------------------------------------------------
@@ -296,7 +296,17 @@ data CatOpts n = CatOpts { _catMethod    :: CatMethod
 -- this is not a problem when using the 'sep' lens, as its type is
 -- more restricted.
 
-makeLensesWith (lensRules & generateSignatures .~ False) ''CatOpts
+-- makeLensesWith (lensRules & generateSignatures .~ False) ''CatOpts
+catMethod f_a29Yx (CatOpts x1_a29Yy x2_a29Yz x3_a29YA)
+  = fmap
+      (\ y1_a29YB -> CatOpts y1_a29YB x2_a29Yz x3_a29YA)
+      (f_a29Yx x1_a29Yy)
+{-# INLINE catMethod #-}
+sep f_a29YC (CatOpts x1_a29YD x2_a29YE x3_a29YF)
+  = fmap
+      (\ y1_a29YG -> CatOpts x1_a29YD y1_a29YG x3_a29YF)
+      (f_a29YC x2_a29YE)
+{-# INLINE sep #-}
 
 -- | Which 'CatMethod' should be used:
 --   normal catenation (default), or distribution?

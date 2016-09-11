@@ -1,7 +1,7 @@
 {-# LANGUAGE DeriveDataTypeable         #-}
 {-# LANGUAGE FlexibleContexts           #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
-{-# LANGUAGE TemplateHaskell            #-}
+-- {-# LANGUAGE TemplateHaskell            #-}
 {-# LANGUAGE TypeFamilies               #-}
 {-# LANGUAGE MultiParamTypeClasses               #-}
 -----------------------------------------------------------------------------
@@ -109,7 +109,15 @@ data Specular = Specular
   , _specularSize      :: Double
   }
 
-makeLenses ''Specular
+-- makeLenses ''Specular
+specularIntensity :: Lens' Specular Double
+specularIntensity f_aEgk (Specular x1_aEgl x2_aEgm)
+  = fmap (\ y1_aEgn -> Specular y1_aEgn x2_aEgm) (f_aEgk x1_aEgl)
+{-# INLINE specularIntensity #-}
+specularSize :: Lens' Specular Double
+specularSize f_aEgp (Specular x1_aEgq x2_aEgr)
+  = fmap (\ y1_aEgs -> Specular x1_aEgq y1_aEgs) (f_aEgp x2_aEgr)
+{-# INLINE specularSize #-}
 
 newtype Highlight = Highlight (Last Specular)
   deriving (Typeable, Semigroup)
